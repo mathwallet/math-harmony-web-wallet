@@ -1,0 +1,627 @@
+@charset "utf-8";
+:root {
+  --darkbg: #2c363f;
+  --blueColor: #007aff;
+  --greenColor: #4cd964;
+  --greyColor: #8a8a8f;
+  --pale-grey: #efeff4;
+}
+
+@font-face {
+  font-family: Gotham-Book;
+  src: url("fonts/Gotham-Book.otf")
+}
+
+@font-face {
+  font-family: Gotham-Light;
+  src: url("fonts/Gotham-Light.otf")
+}
+
+@font-face {
+  font-family: Gotham-Medium;
+  src: url("fonts/Gotham-Medium.otf")
+}
+
+
+/* 禁用iPhone中Safari的字号自动调整 */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  /* 解决IOS默认滑动很卡的情况 */
+  -webkit-overflow-scrolling: touch;
+  font-size: 14px;
+}
+
+p,
+div,
+ul,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+body {
+  font-family: Gotham-Book;
+  color: #000;
+  background-color: var(--pale-grey);
+  min-width: 1272px;
+  overflow: scroll;
+}
+
+ul,
+li {
+  list-style: none;
+  padding-left: 0;
+}
+
+a,
+a:hover,
+a:active,
+a:focus {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button,
+textarea,
+input,
+select {
+  outline: none;
+  resize: none;
+  box-shadow: none;
+  /*去掉ios阴影*/
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  background: transparent;
+}
+
+img+span {
+  vertical-align: middle;
+}
+
+i {
+  font-style: normal;
+}
+
+[v-cloak] {
+  display: none;
+}
+.wc-mask{
+  user-select: text!important;
+}
+.wc-popup-text{
+  word-break:break-all;
+}
+.wc-popup {
+  top: 40%!important;
+}
+.caret {
+  width: 12px;
+  height: 12px;
+  border: none;
+  background: url(../img/icons/dropdown_white@2x.png) no-repeat center /12px;
+}
+
+.btn {
+  color: #fff !important;
+  background: var(--blueColor);
+  padding: 12px 24px;
+  font-family: Gotham-Medium;
+  font-weight: 500;
+}
+
+.grey-fsz {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--greyColor) !important;
+}
+
+.null {
+  padding: 32px;
+  text-align: center;
+}
+
+
+/*nav*/
+
+.math-nav {
+  background: var(--darkbg);
+  padding: 16px 24px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 500;
+}
+
+.math-nav a,
+.math-nav a:hover {
+  color: #fff;
+}
+
+.math-nav .dropdown {
+  display: inline-block;
+  padding-left: 24px;
+}
+
+.dropdown-menu {
+  min-width: 0;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.math-nav .dropdown li {
+  cursor: pointer;
+  padding: 6px 20px;
+}
+
+.math-nav .float-right .mobile {
+  color: #5ac8fa;
+  padding-right: 24px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.math-nav .float-right {
+  padding: 8px;
+  line-height: 16px;
+}
+
+.math-nav img+span {
+  vertical-align: text-top;
+}
+
+
+/*首页登录*/
+
+.main-container {
+  overflow: hidden;
+  margin: 96px auto 32px;
+  width: 824px;
+  background: #fff;
+}
+
+.login-container {
+  text-align: center;
+  margin-bottom: 96px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--greyColor);
+}
+
+.login-container .info {
+  padding: 64px 24px 48px;
+}
+
+.login-container h1 {
+  font-size: 24px;
+  font-family: Gotham-Medium;
+  font-weight: 500;
+  line-height: 1.33;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+.login-container .btn {
+  display: inline-block;
+  margin-top: 48px;
+}
+
+
+/*copyright*/
+
+.copyright {
+  text-align: center;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 16px;
+  color: var(--greyColor);
+}
+
+.webwallet+.copyright {
+  padding-left: 400px;
+}
+
+
+/*左边列表*/
+
+.user-info {
+  position: fixed;
+  left: 0;
+  top: 64px;
+  bottom: 48px;
+  width: 400px;
+  background: #fff;
+  z-index: 100;
+  padding: 32px 24px 0;
+  font-size: 12px;
+  line-height: 16px;
+  overflow-y: scroll;
+}
+
+.user-info .avator {
+  width: 96px;
+  height: 96px;
+  display: inline-block;
+  border-radius: 50%;
+  box-shadow: 0 0 1px 1px var(--pale-grey);
+  border: 8px solid #fff;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.user-info h4 {
+  font-size: 20px;
+  font-weight: 500;
+  font-family: Gotham-Medium;
+  line-height: 1.2;
+  margin: 4px 0;
+}
+
+.user-info .operation-list {
+  margin-top: 34px;
+  cursor: pointer;
+}
+
+.user-info .token-info {
+  margin-top: 32px;
+  padding: 32px 0;
+  border-top: 1px solid var(--pale-grey);
+}
+
+.user-info .token-list {
+  margin-top: 32px;
+  padding-left: 0;
+}
+
+.user-info .token-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.refresh-logout {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 400px;
+  padding: 16px 24px;
+  background: #fff;
+  text-align: left;
+}
+
+.refresh-logout a {
+  padding-left: 20px;
+}
+
+.refresh-logout a:first-child {
+  background: url(../img/icons/refresh_grey@2x.png) no-repeat left center/16px;
+}
+
+.refresh-logout a:last-child {
+  background: url(../img/icons/logout_grey@2x.png) no-repeat left center/16px;
+}
+
+.refresh-logout a:hover:first-child {
+  background: url(../img/icons/refresh_blue@2x.png) no-repeat left center/16px;
+}
+
+.refresh-logout a:hover:last-child {
+  background: url(../img/icons/logout_blue@2x.png) no-repeat left center/16px;
+}
+
+.operation-list a:nth-child(2) {
+  border-left: 1px solid var(--pale-grey);
+  margin-left: 12px;
+  padding-left: 12px;
+}
+
+.refresh-logout a:first-child {
+  border-right: 1px solid var(--pale-grey);
+  margin-right: 12px;
+  padding-right: 12px;
+}
+
+.user-info a:hover,
+.refresh-logout a:hover {
+  color: var(--blueColor) !important;
+  cursor: pointer;
+}
+
+
+/*中间内容*/
+
+.main-info {
+  margin-left: 400px;
+  padding: 0 24px;
+}
+
+.transfer-container {
+  padding: 16px 24px 32px;
+}
+
+.transfer-container .btn {
+  display: block;
+}
+
+.tabs {
+  border-bottom: 1px solid var(--pale-grey);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.tabs .tab {
+  margin-right: 24px;
+  padding-bottom: 16px;
+  color: var(--geryColor);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.tabs .tab.active {
+  font-weight: 500;
+  font-family: Gotham-Medium;
+  color: var(--blueColor);
+  border-bottom: 2px solid var(--blueColor);
+}
+
+.basic-form label {
+  font-size: 12px;
+  line-height: 16px;
+  margin: 32px 0 8px;
+  font-weight: 400;
+}
+
+.basic-form input,
+.basic-form select,
+.basic-form .input {
+  display: block;
+  padding: 12px;
+  line-height: 1.5;
+  font-size: 16px;
+  border: 1px solid var(--pale-grey);
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.basic-form .btn {
+  margin-top: 32px;
+}
+
+.basic-group li {
+  float: left;
+}
+
+.basic-group .amount {
+  width: calc(100% - 190px);
+}
+
+.basic-group .token {
+  width: 164px;
+  margin-left: 24px;
+  float: right;
+}
+
+.basic-group select {
+  background: url(../img/icons/dropdown_black@2x.png)no-repeat 140px center/12px;
+  border-radius: 0;
+}
+
+
+/*table*/
+
+.transactions {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.transactions thead th {
+  padding: 12px 0;
+}
+
+.transactions td {
+  padding: 8px 0;
+  padding-right: 24px;
+  width: 160px;
+  max-width: 160px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.transactions tr td a {
+  color: #000;
+  padding: 4px 0;
+  font-size: 12px;
+}
+
+.transactions tr td:first-child a {
+  color: var(--blueColor)!important;
+}
+
+.transactions tr td:nth-child(2) a {
+  padding: 4px 8px;
+  background: #f7f7fa;
+}
+
+.transactions tr td:nth-child(3) {
+  width: 216px;
+  max-width: 216px;
+}
+
+.transactions tr td:nth-child(4) {
+  width: 104px;
+  max-width: 104px;
+}
+
+.transactions tr td:nth-child(4) a {
+  color: var(--greenColor);
+}
+
+.transactions tr td:last-child,
+.transactions tr th:last-child {
+  text-align: right;
+  padding-right: 0;
+}
+
+.page-pagination {
+  text-align: right;
+  margin-top: 15px;
+  padding-top: 20px;
+  border-top: 1px solid var(--pale-grey);
+}
+
+.page-pagination img,
+.page-pagination span {
+  margin-left: 16px;
+  vertical-align: middle;
+}
+
+.page-pagination .clickable {
+  cursor: pointer;
+}
+
+.page-pagination i {
+  color: var(--greyColor);
+}
+
+.transfer-container h5 {
+  font-size: 16px;
+  font-weight: 500;
+  font-family: Gotham-Medium;
+  line-height: 1.5;
+  padding-bottom: 15px;
+}
+
+.trans_detail {
+  font-size: 12px;
+  line-height: 16px;
+  padding-top: 32px;
+  border-top: 1px solid var(--pale-grey);
+}
+
+.trans_detail h4 {
+  font-size: 20px;
+  font-weight: 500;
+  font-family: Gotham-Medium;
+  line-height: 1.2;
+  margin: 4px 0;
+}
+
+.trans_detail ul {
+  padding: 16px 0 0;
+}
+
+.trans_detail li {
+  padding: 12px 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.trans_detail li span {
+  width: 164px;
+  min-width: 164px;
+  margin-right: 24px;
+  color: var(--greyColor);
+}
+
+.trans_detail li:first-child p {
+  color: var(--greenColor);
+}
+
+.trans_detail li p {
+  word-wrap: break-word;
+}
+
+.trans_detail .txHash {
+  padding-top: 28px;
+  margin-top: 16px;
+  border-top: 1px solid var(--pale-grey);
+}
+
+.fee-set .setBtn {
+  cursor: pointer;
+  color: var(--blueColor);
+  padding-left: 12px;
+  margin-left: 12px;
+  border-left: 1px solid var(--pale-grey);
+}
+
+.fee-set li {
+  position: relative;
+  float: left;
+}
+
+.fee-set li span {
+  position: absolute;
+  top: 16px;
+  left: 12px;
+  font-size: 12px;
+  line-height: 24px;
+}
+
+.fee-set .slider {
+  position: relative;
+  margin: 14px 0 30px;
+  height: 4px;
+  background: var(--pale-grey);
+  cursor: pointer
+}
+
+.fee-set .slider .thunk {
+  position: absolute;
+  left: 100px;
+  top: -14px;
+  width: 32px;
+  height: 32px
+}
+
+.fee-set .slider .block {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--pale-grey);
+  background: #fff;
+  transition: .2s all;
+  text-align: center;
+  line-height: 32px;
+}
+
+.fee-set .slider .cheap,
+.fee-set .slider .fast {
+  position: absolute;
+  top: 18px;
+  color: var(--greyColor);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.fee-set .slider .cheap {
+  left: 0;
+}
+
+.fee-set .slider .fast {
+  right: 0;
+}
+
+.fee-set .gas-price,
+.fee-set .gas-limit {
+  width: 282px;
+}
+
+.fee-set .gas-limit {
+  margin-left: 24px;
+}
+
+.fee-set .gas-price input,
+.fee-set .gas-limit input {
+  text-align: right;
+  padding-left: 130px;
+}
