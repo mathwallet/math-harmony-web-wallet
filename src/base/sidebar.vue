@@ -121,10 +121,10 @@
       copyAddress() {
         var clipboard = new this.clipboard("#copyBtn");
         clipboard.on("success", (element=>{ //复制成功的回调
-          this.$alert(this.$t('copy_success'));
+          this.$toast(this.$t('copy_success'));
         }));
         clipboard.on("error", (element=>{ //复制失败的回调
-          this.$alert(this.$t('copy_fail'));
+          this.$toast(this.$t('copy_fail'));
         }))
       },
       getUnit(){

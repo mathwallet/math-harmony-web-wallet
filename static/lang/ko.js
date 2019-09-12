@@ -64,5 +64,12 @@ module.exports = {
   gas_limit_null: 'Gas Limit is null',
   gas_Price_null: 'Gas Price is null',
   webwallet_harmony_amount_notenough: ' 잔액이 부족합니다',
-  node_not_available:'유효하지 않은 노드'
+  node_not_available:'유효하지 않은 노드',
+  webwallet_extrinsicID: '거래ID',
+  webwallet_module: '모듈',
+  webwallet_signature: '사인',
+  webwallet_address: '주소',
+  webwallet_transfers: '이체 기록',
+  noTransfer: '이체 기록이 없습니다',
+  Confirm:'Confirm',
 }

@@ -64,5 +64,12 @@ module.exports = {
   gas_limit_null: 'Gas Limit不能为空',
   gas_Price_null: 'Gas Price不能为空',
   webwallet_harmony_amount_notenough: '可用余额不足',
-  node_not_available:'当前节点不可用'
+  node_not_available:'当前节点不可用',
+  webwallet_extrinsicID: '交易ID',
+  webwallet_module: '模块',
+  webwallet_signature: '签名',
+  webwallet_address: '地址',
+  webwallet_transfers: '转账记录',
+  noTransfer: '暂无任何转账记录',
+  Confirm:'确认',
 }

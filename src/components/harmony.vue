@@ -143,7 +143,13 @@
         },
         timer:'',
         shardArray:[],// 用于存储拉取到的分片信息
-        nodes:this.globalData.harmony.nodes
+        nodes:this.globalData.harmony.nodes,
+        goUrl:{
+          Harmony:'https://explorer.harmony.one/#/tx/',
+          Betanet:'https://explorer.beta.harmony.one/#/tx/',
+          Pangaea:'https://explorer.pangaea.harmony.one/#/tx/',
+          Localhost:''
+        }
       }
     },
     created() {
@@ -208,22 +214,22 @@
     },
     methods: {
       // 字符串转16进制
-      stringToHex(str){
-        if(str === ""){
+      stringToHex(str) {
+        if (str === "") {
           return "";
         }
         let arr = [];
         arr.push("0x");
-        for(let i=0;i<str.length;i++){
+        for (let i = 0; i < str.length; i++) {
           arr.push(str.charCodeAt(i).toString(16));
         }
         return arr.join('');
       },
       // 计时器
-      timerFunc(){
-        this.timer = setInterval(()=>{
+      timerFunc() {
+        this.timer = setInterval(() => {
           this.balanceUpdate();
-        },5000);
+        }, 5000);
       },
       getAccount() {
         if (this.webUtil.getCookie('identity_harmony')) {
@@ -249,7 +255,7 @@
         this.thunk.onmousedown = function (e) {
           let width = parseInt(_this.width);
           let disX = e.clientX;
-          document.onmousemove = function (e){
+          document.onmousemove = function (e) {
             // value, left, width
             // 当value变化的时候，会通过计算属性修改left，width
 
@@ -266,45 +272,45 @@
             _this.transfer.fee = 0.00252 * (_this.progress.per / max).toFixed(6)
 
           };
-          document.onmouseup =  function (e) {
+          document.onmouseup = function (e) {
             document.onmousemove = document.onmouseup = null;
           };
           return false;
         }
       },
-      dropdownToken(){
+      dropdownToken() {
         this.values.push('ONE');
       },
-      getFromShard(param){
+      getFromShard(param) {
         this.fromShard = param;
-        this.shardArray.forEach(shard=>{
-          if (shard.shardID == param){
+        this.shardArray.forEach(shard => {
+          if (shard.shardID == param) {
             this.url = shard.http;
           }
         })
       },
       // 切换 shard
-      changeUrl(param){
-        if (param){
+      changeUrl(param) {
+        if (param) {
           this.url = param;
           // 切换节点同时初始化 fromShard和toShard
-          this.webUtil.setSession('fromShard',0);
-          this.webUtil.setSession('toShard',0);
+          this.webUtil.setSession('fromShard', 0);
+          this.webUtil.setSession('toShard', 0);
           window.location.reload();
         }
       },
       // 获取fromShard,toShard
-      getShard(){
-        if (this.webUtil.getSession('fromShard') && this.webUtil.getSession('toShard')){
+      getShard() {
+        if (this.webUtil.getSession('fromShard') && this.webUtil.getSession('toShard')) {
           this.fromShard = this.webUtil.getSession('fromShard');
           this.toShard = this.webUtil.getSession('toShard');
-        }else{
+        } else {
           this.webUtil.setSession('fromShard', 0);
           this.webUtil.setSession('toShard', 0);
         }
       },
       // 计算代币value
-      getCoinValue(coin, num){
+      getCoinValue(coin, num) {
         this.balances.CNY = parseFloat(coin.cny) * parseFloat(num);
         this.balances.USD = parseFloat(coin.usd) * parseFloat(num);
         this.balances.KRW = parseFloat(coin.krw) * parseFloat(num);
@@ -320,8 +326,8 @@
           let hexAddress = fromBech32(this.account, "one");
           // 初始化 harmony对象
           let harmony = new Harmony(this.url, this.config);
-          harmony.blockchain.getShardingStructure().then(res=>{
-            if (res.result){
+          harmony.blockchain.getShardingStructure().then(res => {
+            if (res.result) {
               // 设置分片信息
               harmony.shardingStructures(res.result);
               // 存储分片信息 用于页面展示
@@ -329,36 +335,40 @@
 
               // 获取余额
               let id = parseInt(this.fromShard);
-              harmony.blockchain.getBalance({address: hexAddress, blockNumber: 'latest', shardID:id}).then(response=>{
+              harmony.blockchain.getBalance({
+                address: hexAddress,
+                blockNumber: 'latest',
+                shardID: id
+              }).then(response => {
                 let result = response.result;
                 console.log(hexToNumber(result));
-                let balance = new BigNumber(hexToNumber(result)+'');
-                balance = balance.div(Math.pow(10,this.decimal)).toFixed();
+                let balance = new BigNumber(hexToNumber(result) + '');
+                balance = balance.div(Math.pow(10, this.decimal)).toFixed();
 
-                this.$set(this.balances.list,'ONE',balance);
+                this.$set(this.balances.list, 'ONE', balance);
                 this.balances.sum = balance;
                 return this.balances.sum;
-              }).then((sum)=>{
+              }).then((sum) => {
                 // 获取代币价格
-                this.getCoinPrice().then(coin=>{
+                this.getCoinPrice().then(coin => {
                   // 计算代币value
                   this.getCoinValue(coin, this.balances.sum);
                 });
-              }).catch(err=>{
+              }).catch(err => {
                 console.log(err);
               })
-            }else{
-              this.$alert(this.$t('node_not_available')).then(()=>{
+            } else {
+              this.$alert(this.$t('node_not_available')).then(() => {
                 clearInterval(this.timer);
               })
             }
-          }).catch(err=>{
+          }).catch(err => {
             console.log(err);
           })
         })
       },
       // 更新余额
-      balanceUpdate(){
+      balanceUpdate() {
         // 获取初始化url
         let shard = JSON.parse(this.webUtil.getSession('shard'));
         this.url = JSON.parse(shard).url;
@@ -366,7 +376,7 @@
         let hexAddress = fromBech32(this.account, "one");
         let harmony = new Harmony(this.url, this.config);
 
-        harmony.blockchain.getShardingStructure().then(res=> {
+        harmony.blockchain.getShardingStructure().then(res => {
           if (res.result) {
             // 设置分片信息
             harmony.shardingStructures(res.result);
@@ -374,98 +384,98 @@
             this.shardArray = res.result;
 
             let id = parseInt(this.fromShard);
-            harmony.blockchain.getBalance({address: hexAddress, blockNumber: 'latest', shardID:id}).then(response=>{
+            harmony.blockchain.getBalance({address: hexAddress, blockNumber: 'latest', shardID: id}).then(response => {
               let result = response.result;
-              let balance = new BigNumber(hexToNumber(result)+'');
-              balance = balance.div(Math.pow(10,this.decimal)).toFixed();
-              if (this.balances.list.ONE != balance){
-                this.$set(this.balances.list,'ONE',balance);
+              let balance = new BigNumber(hexToNumber(result) + '');
+              balance = balance.div(Math.pow(10, this.decimal)).toFixed();
+              if (this.balances.list.ONE != balance) {
+                this.$set(this.balances.list, 'ONE', balance);
                 this.balances.sum = balance;
               }
               return this.balances.sum;
-            }).then(sum=>{
-              this.getCoinPrice().then(coin=>{
+            }).then(sum => {
+              this.getCoinPrice().then(coin => {
                 // 计算代币value
                 this.getCoinValue(coin, this.balances.sum);
               });
-            }).catch(err=>{
+            }).catch(err => {
               console.log(err);
             })
           }
         });
       },
-      async getCoinPrice(){
+      async getCoinPrice() {
         // 获取ONE代币人民币价格
-        this.webUtil.getTokenPrice(this.globalData.domain, 'ONE', '1001').then(res=>{
+        this.webUtil.getTokenPrice(this.globalData.domain, 'ONE', '1001').then(res => {
           this.coin.cny = parseFloat(res.last2Rmb);
-        }).then(()=>{
+        }).then(() => {
           // 获取汇率
-          this.webUtil.getCoinPub(this.globalData.domain).then(res=>{
+          this.webUtil.getCoinPub(this.globalData.domain).then(res => {
             // 计算美元韩元
-            this.coin.usd = this.coin.cny/res.usd;
-            this.coin.krw = this.coin.cny/res.krw;
+            this.coin.usd = this.coin.cny / res.usd;
+            this.coin.krw = this.coin.cny / res.krw;
           })
         });
         return this.coin;
       },
       // 设置gasPrice和gasLimit
-      gasSimpleSet(fee){
+      gasSimpleSet(fee) {
         // gasLimit默认为 25200
         this.gasLimit = "25200";
         // 计算gasPrice 以wei计算
-        let tmp = new BigNumber(fee+'');
-        this.gasPrice = tmp.div(this.gasLimit).times(Math.pow(10,this.decimal)).toFixed();
+        let tmp = new BigNumber(fee + '');
+        this.gasPrice = tmp.div(this.gasLimit).times(Math.pow(10, this.decimal)).toFixed();
       },
       sendTransfer() {
-        if(!this.transfer.account){
+        if (!this.transfer.account) {
           this.$alert(this.$t('transfer_account_null'))
           return false;
         }
-        if(!this.transfer.amount){
+        if (!this.transfer.amount) {
           this.$alert(this.$t('transfer_amount_null'))
           return false;
         }
-        if(this.transfer.amount<Math.pow(10,-this.decimal)){
-          this.$alert(this.$t('transfer_amount_min')+Math.pow(10,-this.decimal));
+        if (this.transfer.amount < Math.pow(10, -this.decimal)) {
+          this.$alert(this.$t('transfer_amount_min') + Math.pow(10, -this.decimal));
           return false;
         }
         // 判断转账数量
-        if (parseFloat(this.transfer.amount) >= parseFloat(this.balances.sum)){
-          this.$alert(this.$t('webwallet_harmony_amount_notenough'));
-          return false;
-        }
+        // if (parseFloat(this.transfer.amount) >= parseFloat(this.balances.sum)) {
+        //   this.$alert(this.$t('webwallet_harmony_amount_notenough'));
+        //   return false;
+        // }
 
         // 计算gasPrice
-        if (this.selectedSet == 1){
+        if (this.selectedSet == 1) {
           this.gasSimpleSet(this.transfer.fee);
-        } else{
-          if(!this.transfer.gasPrice){
+        } else {
+          if (!this.transfer.gasPrice) {
             this.$alert(this.$t('gas_limit_null'))
             return false;
           }
-          if(!this.transfer.gasLimit){
+          if (!this.transfer.gasLimit) {
             this.$alert(this.$t('gas_price_null'))
             return false;
           }
-          this.gasPrice = this.transfer.gasPrice*Math.pow(10,9);
+          this.gasPrice = this.transfer.gasPrice * Math.pow(10, 9);
           this.gasLimit = this.transfer.gasLimit;
         }
 
         // 处理转账数量 以 wei为单位
-        let amount = new BigNumber(this.transfer.amount+'');
-        let value = amount.times(Math.pow(10,this.decimal)).toString();
+        let amount = new BigNumber(this.transfer.amount + '');
+        let value = amount.times(Math.pow(10, this.decimal)).toString();
 
         // 处理data
         let data = this.stringToHex(this.transfer.input);
 
         // 判断插件是否存在
-        if (!window.harmony){
+        if (!window.harmony) {
           this.$alert(this.$t('noMathExtension'));
           return false;
         }
 
         // 调用登陆函数
-        window.harmony.getAccount().then(res=>{
+        window.harmony.getAccount().then(res => {
           let account = res.address;
 
           //判断插件选择账户和当前账户是否一致
@@ -490,30 +500,40 @@
           let harmony = new Harmony(this.url, this.config);
           let txn = harmony.transactions.newTx(transactionObj, true);
 
-          window.harmony.signTransaction(txn, true).then(signed=>{
+          window.harmony.signTransaction(txn, true).then(signed => {
             // 发送交易
-            signed.sendTransaction().then(res=>{
+            signed.sendTransaction().then(res => {
               let [transaction, hash] = res;
-              console.log(hash);
               console.log(transaction);
-              let url = 'https://explorer.harmony.one/tx/hash/'+hash;
-              if (hash){
-                this.$alert({
-                  content: url,
-                  btnText: 'Go'
-                }).then(()=>{
-                  // window.open(url);
-                  window.location.href = url;
-                });
-                transaction.confirm(hash).then(res=>{
-                  console.log(res);
-                })
+              let shard = JSON.parse(this.webUtil.getSession('shard'));
+
+              let name = JSON.parse(shard).name;
+              let url = this.goUrl[name];
+              if (name == 'Harmony betanet') {
+                url = this.goUrl.Betanet;
               }
-            }).catch(err=>{
+              url = url + hash;
+              if (hash) {
+                this.$confirm({
+                  content: url,
+                  yesText: 'Go',
+                  noText: 'Close'
+                }).then(success => {
+                  if (success) {
+                    window.location.href = url;
+                  }
+                }).catch(err => {
+                  if (err == 'fail') {
+                    window.location.reload();
+                  }
+                  console.log(err);
+                });
+              }
+            }).catch(err => {
               console.log(err);
               this.$alert(this.$t('transfer_fail'));
             })
-          }).catch(err=>{
+          }).catch(err => {
             console.log(err);
           })
         });

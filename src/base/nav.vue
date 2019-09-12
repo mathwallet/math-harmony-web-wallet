@@ -72,8 +72,8 @@
           let name = JSON.parse(this.webUtil.getSession('shard'));
           this.currentEnv = JSON.parse(name).name;
         }else{
-          this.currentEnv = 'Harmony betanet';
-          let shard = this.globalData.harmony.nodes[2];
+          let shard = this.globalData.harmony.nodes[0];
+          this.currentEnv = shard.name;
           this.webUtil.setSession('shard', JSON.stringify(shard));
         }
       },

@@ -25,7 +25,7 @@ module.exports = {
   webwallet_txHash: "TxHash",
   webwallet_type: "Type",
   webwallet_value: "Value",
-  webwallet_status: "To",
+  webwallet_status: "Status",
   webwallet_block_height: "Block Height",
   webwallet_tx_time: "Tx Time",
   transaction_information: "Transaction Information",
@@ -64,5 +64,12 @@ module.exports = {
   gas_limit_null: 'Gas Limit is null',
   gas_Price_null: 'Gas Price is null',
   webwallet_harmony_amount_notenough: 'Have no enough available balance',
-  node_not_available:'Current node is not available'
+  node_not_available:'Current node is not available',
+  webwallet_extrinsicID: 'Extrinsic ID',
+  webwallet_module: 'Module',
+  webwallet_signature: 'Signature',
+  webwallet_address: 'Address',
+  webwallet_transfers: 'Transfers',
+  noTransfer: 'No transfer',
+  Confirm:'Confirm',
 }

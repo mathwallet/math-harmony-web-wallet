@@ -38,7 +38,9 @@ Vue.use(Alert, {
   title: vue1.$t('prompt'),
   btnText: 'OK'
 });
-Vue.use(Confirm);
+Vue.use(Confirm, {
+  title: vue1.$t('Confirm'),
+});
 Vue.use(Toast, {
   location: 'bottom',
   toastStyle: {
