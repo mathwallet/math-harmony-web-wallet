@@ -230,15 +230,15 @@ export default {
       let gasPrice = new BigNumber(this.transfer.gasPrice + "");
       let limit = new BigNumber(this.transfer.gasLimit + "");
       return gasPrice.div(Math.pow(10, 9)).times(limit);
-    },
-    config: {
-      get() {
-        return {
-          chainType: ChainType.Harmony,
-          chainUrl: this.url
-        };
-      }
     }
+    // config: {
+    //   get() {
+    //     return {
+    //       chainType: ChainType.Harmony,
+    //       chainUrl: this.url
+    //     };
+    //   }
+    // }
   },
   watch: {
     toShard(newValue, oldValue) {
