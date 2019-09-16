@@ -149,7 +149,7 @@ export default {
       fromShard: 0,
       toShard: 0,
       unit: this.webCoin.unit,
-      harmonyExt: new HarmonyExtension(window.harmony),
+      harmonyExt: undefined,
       selectedSet: 1,
       decimal: 18,
       slider: null, //滚动条DOM元素
@@ -363,7 +363,7 @@ export default {
         let hexAddress = fromBech32(this.account, "one");
         // 初始化 harmony对象
         // let harmony = new Harmony(this.url, this.config);
-
+        this.harmonyExt = new HarmonyExtension(window.harmony);
         let harmony = this.harmonyExt;
 
         harmony.setProvider(this.url);
