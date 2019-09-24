@@ -6,7 +6,7 @@ export default {
       blockchain: 'Harmony',
       chainId: ''
     },
-    nodes:[
+    nodes: [
       // {
       //   name:'Mainnet',
       //   url:'http://s0.t.hmny.io:9500/'
@@ -20,20 +20,28 @@ export default {
       //   url:'http://s0.b.hmny.io:9500/'
       // },
       {
-        name:'Harmony',
-        url:'https://api.s1.t.hmny.io/'
+        name: 'Harmony',
+        url: 'https://api.s1.t.hmny.io/',
+        // add chainID
+        chainId: 1
       },
       {
-        name:'Pangaea',
-        url:'https://api.s1.pga.hmny.io/'
+        name: 'Pangaea',
+        url: 'https://api.s1.pga.hmny.io/',
+        // add chainID
+        chainId: 3
       },
       {
-        name:'Harmony betanet',
-        url:'https://api.s1.b.hmny.io/'
+        name: 'Harmony Testnet',
+        url: 'https://api.s1.b.hmny.io/',
+        // add chainID
+        chainId: 2
       },
       {
-        name:'Localhost',
-        url:'http://127.0.0.1:9500'
+        name: 'Localhost',
+        url: 'http://127.0.0.1:9500',
+        // add chainID
+        chainId: 2
       }
     ]
   },
