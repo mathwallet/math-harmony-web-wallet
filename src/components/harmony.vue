@@ -129,7 +129,7 @@
   import common from "static/js/common.js";
   import BigNumber from "static/js/bignumber.mjs";
   import { HarmonyExtension } from "@harmony-js/core";
-  import { ChainType, hexToNumber } from "@harmony-js/utils";
+  import { ChainType, hexToNumber, Unit } from "@harmony-js/utils";
   import { fromBech32 } from "@harmony-js/crypto";
   export default {
     data() {
@@ -150,6 +150,8 @@
         toShard: 0,
         unit: this.webCoin.unit,
         harmonyExt: undefined,
+        // 增加chainId属性
+        chainId: 1,
         selectedSet: 1,
         decimal: 18,
         slider: null, //滚动条DOM元素
@@ -231,7 +233,6 @@
         let limit = new BigNumber(this.transfer.gasLimit + "");
         return gasPrice.div(Math.pow(10, 9)).times(limit);
       }
-
     },
     watch: {
       toShard(newValue, oldValue) {
@@ -309,6 +310,7 @@
             this.url = shard.http;
           }
         });
+        this.balanceUpdate();
       },
       // 切换 shard
       changeUrl(param) {
@@ -346,11 +348,18 @@
           // 获取初始化url
           let shard = JSON.parse(this.webUtil.getSession("shard"));
           this.url = JSON.parse(shard).url;
+          // 读取config里面每个node的chainId，
+          // 并写入chainId属性
+          this.chainId = JSON.parse(shard).chainId;
 
           let hexAddress = fromBech32(this.account, "one");
-          // 初始化 harmony对象
-          // let harmony = new Harmony(this.url, this.config);
-          this.harmonyExt = new HarmonyExtension(window.harmony);
+          // 使用HarmonyExtension进行初始化
+          // 第二个参数为Object, {chainId:number,chainType:string,chainUrl:string}
+          // 这里不使用chainUrl是因为每次切换shard都会刷新一次，干脆在后面使用setProvider
+          // 这里传入对应的chainId
+          this.harmonyExt = new HarmonyExtension(window.harmony, {
+            chainId: this.chainId
+          });
           let harmony = this.harmonyExt;
 
           harmony.setProvider(this.url);
@@ -484,19 +493,23 @@
           this.$alert(this.$t("transfer_account_null"));
           return false;
         }
-        if (this.transfer.amount=='' && this.transfer.amount !=0) {
+        if (this.transfer.amount == "" && this.transfer.amount != 0) {
           this.$alert(this.$t("transfer_amount_null"));
           return false;
         }
-        if (this.transfer.amount < Math.pow(10, -this.decimal) && this.transfer.amount!=0) {
+        if (
+          this.transfer.amount < Math.pow(10, -this.decimal) &&
+          this.transfer.amount != 0
+        ) {
           this.$alert(
-            this.$t("transfer_amount_min") + this.webUtil.getFullNum(Math.pow(10, -this.decimal)),
+            this.$t("transfer_amount_min") +
+            this.webUtil.getFullNum(Math.pow(10, -this.decimal))
           );
           return false;
         }
         // 判断转账数量
         if (parseFloat(this.transfer.amount) >= parseFloat(this.balances.sum)) {
-          this.$alert(this.$t('webwallet_harmony_amount_notenough'));
+          this.$alert(this.$t("webwallet_harmony_amount_notenough"));
           return false;
         }
 
@@ -549,8 +562,8 @@
             from: from,
             to: to,
             value: value,
-            gasLimit: this.gasLimit,
-            gasPrice: this.gasPrice,
+            gasLimit: new Unit(this.gasLimit).asWei().toWei(),
+            gasPrice: new Unit(this.gasPrice).asWei().toWei(),
             data: data
           };
           // let harmony = new Harmony(this.url, this.config);
@@ -581,7 +594,7 @@
                   url = url + hash;
                   if (hash) {
                     this.$confirm({
-                      content: "Hash: "+hash,
+                      content: "Hash: " + hash,
                       yesText: "Go",
                       noText: "Close"
                     })
@@ -597,12 +610,12 @@
                         console.log(err);
                       });
                   }
-                  transaction.confirm(hash).then(res=>{
+                  transaction.confirm(hash).then(res => {
                     console.log(res);
-                    if (res.txStatus == 'CONFIRMED'){
+                    if (res.txStatus == "CONFIRMED") {
                       this.balanceUpdate();
                     }
-                  })
+                  });
                 })
                 .catch(err => {
                   console.log(err);
