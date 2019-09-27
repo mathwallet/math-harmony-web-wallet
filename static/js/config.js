@@ -18,7 +18,7 @@ export default {
         chainId: 3
       },
       {
-        name:'Harmony betanet',
+        name:'Harmony Testnet',
         url:'https://api.s1.b.hmny.io/',
         chainId: 2
       },
