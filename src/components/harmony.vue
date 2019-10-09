@@ -18,7 +18,8 @@
             <a
               class="tab"
               target="_blank"
-              href=" https://explorer.harmony.one/"
+              v-bind="{explorerLink}"
+              :href="explorerLink.txOnShard"
             >{{$t("webwallet_transactions")}}</a>
           </div>
           <!-- 转账内容 -->
@@ -130,7 +131,7 @@ import common from "static/js/common.js";
 import BigNumber from "static/js/bignumber.mjs";
 import { HarmonyExtension } from "@harmony-js/core";
 import { ChainType, hexToNumber, Unit } from "@harmony-js/utils";
-import { fromBech32 } from "@harmony-js/crypto";
+import { fromBech32, getAddress } from "@harmony-js/crypto";
 export default {
   data() {
     return {
@@ -182,6 +183,11 @@ export default {
         Betanet: "https://explorer.beta.harmony.one/#/tx/",
         Pangaea: "https://explorer.pangaea.harmony.one/#/tx/",
         Localhost: ""
+      },
+      explorerLink: {
+        address: "",
+        txOnShard: "",
+        txDetail: ""
       }
     };
   },
@@ -192,6 +198,7 @@ export default {
   },
   mounted() {
     this.getUnit();
+    this.getExplorerLink();
   },
   computed: {
     // 设置一个百分比，提供计算slider进度宽度和trunk的left值
@@ -270,6 +277,41 @@ export default {
     setToggle(val) {
       this.selectedSet = val;
     },
+    // 获取当前网络
+    getExplorerLink() {
+      let shard = JSON.parse(this.webUtil.getSession("shard"));
+      let name = JSON.parse(shard).name;
+      let fromShard = this.fromShard;
+      let basic = "";
+      const address = getAddress(this.account).bech32;
+      switch (name) {
+        case "Harmony": {
+          basic = "https://explorer.harmony.one/#";
+          break;
+        }
+        case "Pangaea": {
+          basic = "https://explorer.pangaea.harmony.one/#";
+          break;
+        }
+        case "Harmony Testnet": {
+          basic = "https://explorer.beta.harmony.one/#";
+          break;
+        }
+        case "Local": {
+          basic = "";
+          break;
+        }
+        default: {
+          basic = "";
+          break;
+        }
+      }
+      this.explorerLink = {
+        address: `${basic}/address/`,
+        txOnShard: `${basic}/address/${address}/shard/${fromShard}`,
+        txDetail: `${basic}/tx/`
+      };
+    },
     progressSlide() {
       this.slider = this.$refs.slider;
       this.thunk = this.$refs.thunk;
@@ -310,6 +352,7 @@ export default {
           this.url = shard.http;
         }
       });
+      this.getExplorerLink();
     },
     // 切换 shard
     changeUrl(param) {
@@ -583,14 +626,15 @@ export default {
               .then(res => {
                 let [transaction, hash] = res;
                 console.log(transaction);
-                let shard = JSON.parse(this.webUtil.getSession("shard"));
+                // let shard = JSON.parse(this.webUtil.getSession("shard"));
 
-                let name = JSON.parse(shard).name;
-                let url = this.goUrl[name];
-                if (name == "Harmony betanet") {
-                  url = this.goUrl.Betanet;
-                }
-                url = url + hash;
+                // let name = JSON.parse(shard).name;
+                // let url = this.goUrl[name];
+                // if (name == "Harmony Testnet") {
+                //   url = this.goUrl.Betanet;
+                // }
+                // url = url + hash;
+                let url = this.explorerLink.txDetail + hash;
                 if (hash) {
                   this.$confirm({
                     content: "Hash: " + hash,
@@ -599,7 +643,8 @@ export default {
                   })
                     .then(success => {
                       if (success) {
-                        window.location.href = url;
+                        // window.location.href = url;
+                        window.open(url, "_blank");
                       }
                     })
                     .catch(err => {
