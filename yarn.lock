@@ -2,73 +2,39 @@
 # yarn lockfile v1
 
 
-"@harmony-js/account@0.1.24":
-  version "0.1.24"
-  resolved "https://registry.yarnpkg.com/@harmony-js/account/-/account-0.1.24.tgz#ff42ca12993e63e43e971c37ca13bac6196cc8a5"
-  integrity sha512-iJPGk5EFOo5Ib4pblXvps03sNcc+ym3qzaB3p+49U6KATET7LMEXNi/3ZE/InyGoX8uyh5CV88RuWQnek3cZwA==
+"@harmony-js/account@^0.1.26":
+  version "0.1.26"
+  resolved "https://registry.yarnpkg.com/@harmony-js/account/-/account-0.1.26.tgz#6d908a489fe6561df28c2e99169d961775ceda6d"
+  integrity sha512-W/e2/up13dORlBTqBJlo+LNyL+9sgqVHcs/mOVY4jwX7qHfEvOnNSxTMqM4Y/SUkpzqL680maVDCEM4TeqkoPg==
   dependencies:
-    "@harmony-js/core" "0.1.24"
+    "@harmony-js/core" "^0.1.26"
     "@harmony-js/crypto" "0.1.23"
     "@harmony-js/network" "0.1.23"
-    "@harmony-js/transaction" "0.1.23"
+    "@harmony-js/transaction" "^0.1.26"
     "@harmony-js/utils" "0.1.23"
 
-"@harmony-js/account@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@harmony-js/account/-/account-0.1.9.tgz#c4c75822e294484f4a9e6e70615746cdcaf3c085"
-  integrity sha512-JOAHsNoKsULNykNvZRR1QZkZYIc9YVnaETeNnHAyJiz7GY+0e84s7qJZJF9ct6jDTGzopFPHGwnqmWTturEf8A==
+"@harmony-js/contract@^0.1.26":
+  version "0.1.26"
+  resolved "https://registry.yarnpkg.com/@harmony-js/contract/-/contract-0.1.26.tgz#850a800fc90b68d6837ea9983185ef631cd6781e"
+  integrity sha512-DpO/fVKQKzk7GayR+cTqlEVZAXSt5QS4GZmNnptuind09oGXui52UsHG3SmanGbVQFjikXdbKOewermG2YCwdA==
   dependencies:
-    "@harmony-js/core" "0.1.9"
-    "@harmony-js/crypto" "0.1.7"
-    "@harmony-js/network" "0.1.7"
-    "@harmony-js/transaction" "0.1.7"
-    "@harmony-js/utils" "0.1.6"
-
-"@harmony-js/contract@0.1.23":
-  version "0.1.23"
-  resolved "https://registry.yarnpkg.com/@harmony-js/contract/-/contract-0.1.23.tgz#8f84dba8be4a159bdc00564aab7bd8d1d93df16f"
-  integrity sha512-2IEJ6dKcFWPM4t7UkyDjQ6EzOdly2+Q3d7qAkJt9LPFKPN/GJZLv0X7ILyI8EFifzhQMO1DiB2lmS58GX8FuYg==
-  dependencies:
-    "@harmony-js/account" "0.1.9"
+    "@harmony-js/account" "^0.1.26"
     "@harmony-js/crypto" "0.1.23"
     "@harmony-js/network" "0.1.23"
-    "@harmony-js/transaction" "0.1.23"
+    "@harmony-js/transaction" "^0.1.26"
     "@harmony-js/utils" "0.1.23"
 
-"@harmony-js/contract@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@harmony-js/contract/-/contract-0.1.9.tgz#38e406a46483fd5b1142762b93fa70cfdbd61597"
-  integrity sha512-Cb+Kyk3SV81BR5hu9zctgDeg9Nr46mLlfJY5+lvn9es9gWCCR8xGdbQhVEyESDluAtRuqKXJ1o4ZErd9FkRSfg==
+"@harmony-js/core@^0.1.26":
+  version "0.1.26"
+  resolved "https://registry.yarnpkg.com/@harmony-js/core/-/core-0.1.26.tgz#30873218aaad6146e4205a8d7df425812389ef16"
+  integrity sha512-Rer8dkQ7NMbsAOIeDmRFsWf30R/sv+IPb8BdPJtnR5jvOvRpcOQfO+idRUt39zE+Sl0kpr9olbl6qpTKojcCWA==
   dependencies:
-    "@harmony-js/account" "0.1.9"
-    "@harmony-js/crypto" "0.1.7"
-    "@harmony-js/network" "0.1.7"
-    "@harmony-js/transaction" "0.1.7"
-    "@harmony-js/utils" "0.1.6"
-
-"@harmony-js/core@0.1.24", "@harmony-js/core@^0.1.24":
-  version "0.1.24"
-  resolved "https://registry.yarnpkg.com/@harmony-js/core/-/core-0.1.24.tgz#1bbcf4bbc86472ca85be377bb0da130ba174ba13"
-  integrity sha512-Gi8IRz1jxVvsiI0Jmak2hcLi5f+yUxuM1TSpDX5WLQuHXwliaKpegYnZwtvXsheD3kXISJOpFRy7EYdrF4Ltsw==
-  dependencies:
-    "@harmony-js/account" "0.1.24"
-    "@harmony-js/contract" "0.1.23"
+    "@harmony-js/account" "^0.1.26"
+    "@harmony-js/contract" "^0.1.26"
     "@harmony-js/crypto" "0.1.23"
     "@harmony-js/network" "0.1.23"
-    "@harmony-js/transaction" "0.1.23"
+    "@harmony-js/transaction" "^0.1.26"
     "@harmony-js/utils" "0.1.23"
-
-"@harmony-js/core@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@harmony-js/core/-/core-0.1.9.tgz#d5b258ea9ba1dc3c97acc215e638b66680f6da25"
-  integrity sha512-W1c5ywa2c/989ZTJLbsMpFljfcVTkbSiBCuSgyVabjIEYOJsd2NJXSd2Rt6ortDeFBrihhNWkDuew6TxS6DCGQ==
-  dependencies:
-    "@harmony-js/account" "0.1.9"
-    "@harmony-js/contract" "0.1.9"
-    "@harmony-js/crypto" "0.1.7"
-    "@harmony-js/network" "0.1.7"
-    "@harmony-js/transaction" "0.1.7"
-    "@harmony-js/utils" "0.1.6"
 
 "@harmony-js/crypto@0.1.23":
   version "0.1.23"
@@ -76,23 +42,6 @@
   integrity sha512-ZxWw4bTsRWLTAP/XIgsCFKGXVEdxJ/ReIElJmouOG+EI4i5UEs3Y6kNfomuuXFEEYeLqhGBllnhjvTj/ssYegg==
   dependencies:
     "@harmony-js/utils" "0.1.23"
-    aes-js "^3.1.2"
-    bip39 "^2.5.0"
-    bn.js "^4.11.8"
-    elliptic "^6.4.1"
-    hdkey "^1.1.1"
-    hmac-drbg "^1.0.1"
-    js-sha3 "^0.8.0"
-    pbkdf2 "^3.0.17"
-    scrypt.js "^0.3.0"
-    uuid "^3.3.2"
-
-"@harmony-js/crypto@0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@harmony-js/crypto/-/crypto-0.1.7.tgz#944cfe54027d162aff71b050d7ce6e2a3235a443"
-  integrity sha512-LzTyX4jdL69Jr7yX2xn+XWYnXxWTL2fZBWAxG5tmAsz6OAbIv9MmD8MnOdRiwCVe/bbAbpRnUj+Y73aGC79cVw==
-  dependencies:
-    "@harmony-js/utils" "0.1.6"
     aes-js "^3.1.2"
     bip39 "^2.5.0"
     bn.js "^4.11.8"
@@ -114,46 +63,19 @@
     mitt "^1.1.3"
     websocket "^1.0.28"
 
-"@harmony-js/network@0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@harmony-js/network/-/network-0.1.7.tgz#af8d37c5333408ed532a18dee2d044ca00f45eb1"
-  integrity sha512-FRUi4M/71q7DK2eeU66ovun+OGqBuPmNYa3kanFlO1WkORWhHauhjqW4HmZ4dz36+iEYBTB8E4XaJOykebOaEw==
-  dependencies:
-    "@harmony-js/utils" "0.1.6"
-    cross-fetch "^3.0.2"
-    mitt "^1.1.3"
-    websocket "^1.0.28"
-
-"@harmony-js/transaction@0.1.23":
-  version "0.1.23"
-  resolved "https://registry.yarnpkg.com/@harmony-js/transaction/-/transaction-0.1.23.tgz#9f8f9b5d778da9571f84c1971775ae3b89a0e08b"
-  integrity sha512-DrOY0JeLyM16VFO2nsbtprh8EyqBIY4tr3EPkBw0pCSV9eqk8b+eYRMirI1eDTl/ywfzXI7S9Ppilh3oi84pVg==
+"@harmony-js/transaction@^0.1.26":
+  version "0.1.26"
+  resolved "https://registry.yarnpkg.com/@harmony-js/transaction/-/transaction-0.1.26.tgz#088eb9d6195f05f81fa4368fe984d62df750315b"
+  integrity sha512-/mIzjQFphEIdj6nYS0KXiIXUej7Rhvvwdhim267apNQg+6b02JCGfIvg7g2EDYGc33aBI06oLQdVtu7MZj8sNg==
   dependencies:
     "@harmony-js/crypto" "0.1.23"
     "@harmony-js/network" "0.1.23"
     "@harmony-js/utils" "0.1.23"
 
-"@harmony-js/transaction@0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@harmony-js/transaction/-/transaction-0.1.7.tgz#86d4bd12dc694b83b8b849cde8bfd5c54ecbb9f2"
-  integrity sha512-ukBCs++oWfS5krUmYquTDGv97Ma3zMJ4X/JSSU5+9ebI59wZiWSUj78OA8W0M+TsYugzTIcdyqwKX8pGOdpwtQ==
-  dependencies:
-    "@harmony-js/crypto" "0.1.7"
-    "@harmony-js/network" "0.1.7"
-    "@harmony-js/utils" "0.1.6"
-
 "@harmony-js/utils@0.1.23":
   version "0.1.23"
   resolved "https://registry.yarnpkg.com/@harmony-js/utils/-/utils-0.1.23.tgz#3d755432786f4953320209a18f6c1a08bef667ec"
   integrity sha512-An+Mh9CJ1dvtcETt04gqvFydyLRGbqqXHstCQCyjkMKyrx9zPKD+td5REtHfh7OTzlumqkffHEXqX+nXgu7MNA==
-  dependencies:
-    "@types/bn.js" "^4.11.3"
-    bn.js "^4.11.8"
-
-"@harmony-js/utils@0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@harmony-js/utils/-/utils-0.1.6.tgz#2d683ff089a7aca3e38c48d365b33d2f2efe4fba"
-  integrity sha512-CAR4GpGT5AqUOdUE/Pke2HdKO7Z0Egq2G3QpCsTmObWcgcYzxMNtRByqPB+gxcWsXH6L1z5PDTsLhTMBdTRGnA==
   dependencies:
     "@types/bn.js" "^4.11.3"
     bn.js "^4.11.8"

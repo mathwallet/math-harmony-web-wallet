@@ -8,7 +8,9 @@
         :account="account"
         :blockchain="blockchain"
         :shards="shardArray"
+        :loadingBalance="loadingBalance"
         @getFromShard="getFromShard"
+        @balanceUpdate="balanceUpdate"
       ></side-bar>
       <section class="main-info">
         <div class="main-container transfer-container">
@@ -130,7 +132,12 @@ import sideBar from "base/sidebar";
 import common from "static/js/common.js";
 import BigNumber from "static/js/bignumber.mjs";
 import { HarmonyExtension } from "@harmony-js/core";
-import { ChainType, hexToNumber, Unit } from "@harmony-js/utils";
+import {
+  ChainType,
+  hexToNumber,
+  Unit,
+  isValidAddress
+} from "@harmony-js/utils";
 import { fromBech32, getAddress } from "@harmony-js/crypto";
 export default {
   data() {
@@ -153,6 +160,7 @@ export default {
       harmonyExt: undefined,
       // 增加chainId属性
       chainId: 1,
+      loadingBalance: false,
       selectedSet: 1,
       decimal: 18,
       slider: null, //滚动条DOM元素
@@ -178,12 +186,12 @@ export default {
       timer: "",
       shardArray: [], // 用于存储拉取到的分片信息
       nodes: this.globalData.harmony.nodes,
-      goUrl: {
-        Harmony: "https://explorer.harmony.one/#/tx/",
-        Betanet: "https://explorer.beta.harmony.one/#/tx/",
-        Pangaea: "https://explorer.pangaea.harmony.one/#/tx/",
-        Localhost: ""
-      },
+      // goUrl: {
+      //   Harmony: "https://explorer.harmony.one/#/tx/",
+      //   Betanet: "https://explorer.beta.harmony.one/#/tx/",
+      //   Pangaea: "https://explorer.pangaea.harmony.one/#/tx/",
+      //   Localhost: ""
+      // },
       explorerLink: {
         address: "",
         txOnShard: "",
@@ -193,8 +201,8 @@ export default {
   },
   created() {
     this.dropdownToken();
-    this.getShard();
     this.getAccount();
+    this.getShard();
   },
   mounted() {
     this.getUnit();
@@ -283,7 +291,10 @@ export default {
       let name = JSON.parse(shard).name;
       let fromShard = this.fromShard;
       let basic = "";
-      const address = getAddress(this.account).bech32;
+
+      const address = isValidAddress(this.account)
+        ? getAddress(this.account).bech32
+        : "";
       switch (name) {
         case "Harmony": {
           basic = "https://explorer.harmony.one/#";
@@ -359,7 +370,7 @@ export default {
       if (param) {
         this.url = param;
         // 切换节点同时初始化 fromShard和toShard
-        this.webUtil.setSession("fromShard", 0);
+        this.webUtil.setSession("fromShard", 1);
         this.webUtil.setSession("toShard", 0);
         window.location.reload();
       }
@@ -367,13 +378,14 @@ export default {
     // 获取fromShard,toShard
     getShard() {
       if (
-        this.webUtil.getSession("fromShard") &&
-        this.webUtil.getSession("toShard")
+        this.webUtil.getSession("fromShard") !== undefined &&
+        this.fromShard === undefined &&
+        this.webUtil.getSession("toShard") !== undefined
       ) {
         this.fromShard = this.webUtil.getSession("fromShard");
         this.toShard = this.webUtil.getSession("toShard");
       } else {
-        this.webUtil.setSession("fromShard", 0);
+        this.webUtil.setSession("fromShard", this.fromShard);
         this.webUtil.setSession("toShard", 0);
       }
     },
@@ -406,6 +418,8 @@ export default {
 
         harmony.setProvider(this.url);
 
+        // 刷新balance：true
+        this.loadingBalance = true;
         harmony.blockchain
           .getShardingStructure()
           .then(res => {
@@ -414,7 +428,8 @@ export default {
               harmony.shardingStructures(res.result);
               // 存储分片信息 用于页面展示
               this.shardArray = res.result;
-
+              this.fromShard = harmony.messenger.currentShard;
+              this.getShard();
               // 获取余额
               let id = parseInt(this.fromShard);
               harmony.blockchain
@@ -430,6 +445,8 @@ export default {
 
                   this.$set(this.balances.list, "ONE", balance);
                   this.balances.sum = balance;
+                  // 刷新balance：false
+                  this.loadingBalance = false;
                   return this.balances.sum;
                 })
                 .then(sum => {
@@ -465,6 +482,7 @@ export default {
       let harmony = this.harmonyExt;
 
       harmony.setProvider(this.url);
+      this.loadingBalance = true;
 
       harmony.blockchain.getShardingStructure().then(res => {
         if (res.result) {
@@ -488,6 +506,7 @@ export default {
                 this.$set(this.balances.list, "ONE", balance);
                 this.balances.sum = balance;
               }
+              this.loadingBalance = false;
               return this.balances.sum;
             })
             .then(sum => {
