@@ -430,6 +430,7 @@ export default {
               this.shardArray = res.result;
               this.fromShard = harmony.messenger.currentShard;
               this.getShard();
+              this.getExplorerLink();
               // 获取余额
               let id = parseInt(this.fromShard);
               harmony.blockchain
