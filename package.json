@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@harmony-js/core": "^0.1.27",
+    "@harmony-js/core": "^0.1.28",
     "bignumber.js": "^9.0.0",
     "bootstrap": "^4.3.1",
     "clipboard": "^2.0.4",
