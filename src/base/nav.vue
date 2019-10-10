@@ -53,68 +53,68 @@
   </nav>
 </template>
 <script>
-  import common from "static/js/common.js";
-  export default {
-    props: ["blockchain", "account", "currentNodeName", "shardNodes"],
-    data() {
-      return {
-        unit: "USD",
-        blockchain_lowercase: "",
-        nodes: [],
-        currentEnv: "",
-        chainId: undefined
-      };
+import common from "static/js/common.js";
+export default {
+  props: ["blockchain", "account", "currentNodeName", "shardNodes"],
+  data() {
+    return {
+      unit: "USD",
+      blockchain_lowercase: "",
+      nodes: [],
+      currentEnv: "",
+      chainId: undefined
+    };
+  },
+  created() {
+    this.unit = this.webCoin.getUnit();
+    this.getLowerBlockchain();
+    this.getCurrentShardNode();
+  },
+  methods: {
+    changeLang(lang) {
+      this.$i18n.setUserLanguage(lang);
     },
-    created() {
-      this.unit = this.webCoin.getUnit();
-      this.getLowerBlockchain();
-      this.getCurrentShardNode();
+    toggleUnit(unit) {
+      this.unit = this.webCoin.setUnit(unit);
+      this.elementByValue();
     },
-    methods: {
-      changeLang(lang) {
-        this.$i18n.setUserLanguage(lang);
-      },
-      toggleUnit(unit) {
-        this.unit = this.webCoin.setUnit(unit);
-        this.elementByValue();
-      },
-      elementByValue() {
-        common.$emit("val", this.unit);
-      },
-      getLowerBlockchain() {
-        if (this.blockchain) {
-          this.blockchain_lowercase = this.blockchain.toLowerCase();
-        }
-      },
-      getCurrentShardNode() {
-        if (this.webUtil.getSession("shard")) {
-          let name = JSON.parse(this.webUtil.getSession("shard"));
-          this.currentEnv = JSON.parse(name).name;
-        } else {
-          let shard = this.globalData.harmony.nodes[0];
-          this.currentEnv = shard.name;
-
-          this.webUtil.setSession("shard", JSON.stringify(shard));
-        }
-      },
-      // 选择shard
-      selectShard(shard) {
-        this.currentEnv = shard.name;
-        if (this.webUtil.getSession("shard") != JSON.stringify(shard)) {
-          this.webUtil.setSession("shard", JSON.stringify(shard));
-        }
-        this.$emit("changeUrl", shard.url);
+    elementByValue() {
+      common.$emit("val", this.unit);
+    },
+    getLowerBlockchain() {
+      if (this.blockchain) {
+        this.blockchain_lowercase = this.blockchain.toLowerCase();
       }
+    },
+    getCurrentShardNode() {
+      if (this.webUtil.getSession("shard")) {
+        let name = JSON.parse(this.webUtil.getSession("shard"));
+        this.currentEnv = JSON.parse(name).name;
+      } else {
+        let shard = this.globalData.harmony.nodes[0];
+        this.currentEnv = shard.name;
+
+        this.webUtil.setSession("shard", JSON.stringify(shard));
+      }
+    },
+    // 选择shard
+    selectShard(shard) {
+      this.currentEnv = shard.name;
+      if (this.webUtil.getSession("shard") != JSON.stringify(shard)) {
+        this.webUtil.setSession("shard", JSON.stringify(shard));
+      }
+      this.$emit("changeUrl", shard.url);
     }
-  };
+  }
+};
 </script>
 <style scoped>
-  .logo {
-    margin: -6px 0;
-    float: left;
-  }
-  .shard-url {
-    font-size: 12px;
-    color: darkgrey;
-  }
+.logo {
+  margin: -6px 0;
+  float: left;
+}
+.shard-url {
+  font-size: 12px;
+  color: darkgrey;
+}
 </style>
