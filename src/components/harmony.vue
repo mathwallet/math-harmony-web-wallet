@@ -474,52 +474,40 @@ export default {
     balanceUpdate() {
       // 获取初始化url
       let shard = JSON.parse(this.webUtil.getSession("shard"));
-      this.url = JSON.parse(shard).url;
-
       let hexAddress = fromBech32(this.account, "one");
-      // let harmony = new Harmony(this.url, this.config);
 
       let harmony = this.harmonyExt;
 
-      harmony.setProvider(this.url);
+      // 这里也不需要再次设置shardingStructure了
+
       this.loadingBalance = true;
-
-      harmony.blockchain.getShardingStructure().then(res => {
-        if (res.result) {
-          // 设置分片信息
-          harmony.shardingStructures(res.result);
-          // 存储分片信息 用于页面展示
-          this.shardArray = res.result;
-
-          let id = parseInt(this.fromShard);
-          harmony.blockchain
-            .getBalance({
-              address: hexAddress,
-              blockNumber: "latest",
-              shardID: id
-            })
-            .then(response => {
-              let result = response.result;
-              let balance = new BigNumber(hexToNumber(result) + "");
-              balance = balance.div(Math.pow(10, this.decimal)).toFixed();
-              if (this.balances.list.ONE != balance) {
-                this.$set(this.balances.list, "ONE", balance);
-                this.balances.sum = balance;
-              }
-              this.loadingBalance = false;
-              return this.balances.sum;
-            })
-            .then(sum => {
-              this.getCoinPrice().then(coin => {
-                // 计算代币value
-                this.getCoinValue(coin, this.balances.sum);
-              });
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        }
-      });
+      let id = parseInt(this.fromShard);
+      harmony.blockchain
+        .getBalance({
+          address: hexAddress,
+          blockNumber: "latest",
+          shardID: id
+        })
+        .then(response => {
+          let result = response.result;
+          let balance = new BigNumber(hexToNumber(result) + "");
+          balance = balance.div(Math.pow(10, this.decimal)).toFixed();
+          if (this.balances.list.ONE != balance) {
+            this.$set(this.balances.list, "ONE", balance);
+            this.balances.sum = balance;
+          }
+          this.loadingBalance = false;
+          return this.balances.sum;
+        })
+        .then(sum => {
+          this.getCoinPrice().then(coin => {
+            // 计算代币value
+            this.getCoinValue(coin, this.balances.sum);
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     async getCoinPrice() {
       // 获取ONE代币人民币价格
@@ -604,6 +592,7 @@ export default {
       }
 
       let harmony = this.harmonyExt;
+      // 这里也不需要再次设置shardingStructure了
       // 调用登陆函数
       harmony.wallet.getAccount().then(res => {
         let account = res.address;
@@ -627,12 +616,6 @@ export default {
           gasPrice: new Unit(this.gasPrice).asWei().toWei(),
           data: data
         };
-        // let harmony = new Harmony(this.url, this.config);
-
-        harmony.setProvider(this.url);
-
-        // 因为这里已经new了，所以shardingStructure还要更新一下
-        harmony.shardingStructures(this.shardArray);
 
         let txn = harmony.transactions.newTx(transactionObj, true);
 
@@ -644,15 +627,6 @@ export default {
               .sendTransaction()
               .then(res => {
                 let [transaction, hash] = res;
-                console.log(transaction);
-                // let shard = JSON.parse(this.webUtil.getSession("shard"));
-
-                // let name = JSON.parse(shard).name;
-                // let url = this.goUrl[name];
-                // if (name == "Harmony Testnet") {
-                //   url = this.goUrl.Betanet;
-                // }
-                // url = url + hash;
                 let url = this.explorerLink.txDetail + hash;
                 if (hash) {
                   this.$confirm({
