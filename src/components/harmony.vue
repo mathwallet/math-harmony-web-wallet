@@ -186,12 +186,6 @@ export default {
       timer: "",
       shardArray: [], // 用于存储拉取到的分片信息
       nodes: this.globalData.harmony.nodes,
-      // goUrl: {
-      //   Harmony: "https://explorer.harmony.one/#/tx/",
-      //   Betanet: "https://explorer.beta.harmony.one/#/tx/",
-      //   Pangaea: "https://explorer.pangaea.harmony.one/#/tx/",
-      //   Localhost: ""
-      // },
       explorerLink: {
         address: "",
         txOnShard: "",
@@ -206,7 +200,6 @@ export default {
   },
   mounted() {
     this.getUnit();
-    this.getExplorerLink();
   },
   computed: {
     // 设置一个百分比，提供计算slider进度宽度和trunk的left值
@@ -390,10 +383,10 @@ export default {
       }
     },
     // 计算代币value
-    getCoinValue(coin, num) {
-      this.balances.CNY = parseFloat(coin.cny) * parseFloat(num);
-      this.balances.USD = parseFloat(coin.usd) * parseFloat(num);
-      this.balances.KRW = parseFloat(coin.krw) * parseFloat(num);
+    getCoinValue() {
+      this.balances.CNY = parseFloat(this.coin.cny) * parseFloat(this.balances.sum);
+      this.balances.USD = parseFloat(this.coin.usd) * parseFloat(this.balances.sum);
+      this.balances.KRW = parseFloat(this.coin.krw) * parseFloat(this.balances.sum);
     },
     initExtension() {
       this.webUtil.initMathExtension().then(res => {
@@ -452,9 +445,9 @@ export default {
                 })
                 .then(sum => {
                   // 获取代币价格
-                  this.getCoinPrice().then(coin => {
+                  this.getCoinPrice().then(() => {
                     // 计算代币value
-                    this.getCoinValue(coin, this.balances.sum);
+                    this.getCoinValue();
                   });
                 })
                 .catch(err => {
@@ -473,8 +466,6 @@ export default {
     },
     // 更新余额
     balanceUpdate() {
-      // 获取初始化url
-      let shard = JSON.parse(this.webUtil.getSession("shard"));
       let hexAddress = fromBech32(this.account, "one");
 
       let harmony = this.harmonyExt;
@@ -501,9 +492,9 @@ export default {
           return this.balances.sum;
         })
         .then(sum => {
-          this.getCoinPrice().then(coin => {
+          this.getCoinPrice().then(() => {
             // 计算代币value
-            this.getCoinValue(coin, this.balances.sum);
+            this.getCoinValue();
           });
         })
         .catch(err => {
@@ -512,20 +503,17 @@ export default {
     },
     async getCoinPrice() {
       // 获取ONE代币人民币价格
-      this.webUtil
+      await this.webUtil
         .getTokenPrice(this.globalData.domain, "ONE", "1001")
         .then(res => {
           this.coin.cny = parseFloat(res.last2Rmb);
-        })
-        .then(() => {
           // 获取汇率
           this.webUtil.getCoinPub(this.globalData.domain).then(res => {
             // 计算美元韩元
             this.coin.usd = this.coin.cny / res.usd;
             this.coin.krw = this.coin.cny / res.krw;
-          });
+          })
         });
-      return this.coin;
     },
     // 设置gasPrice和gasLimit
     gasSimpleSet(fee) {
