@@ -523,7 +523,6 @@ export default {
       let tmp = new BigNumber(fee + "");
       this.gasPrice = tmp
         .div(this.gasLimit)
-        .times(Math.pow(10, this.decimal))
         .toFixed();
     },
     sendTransfer() {
@@ -563,13 +562,9 @@ export default {
           this.$alert(this.$t("gas_price_null"));
           return false;
         }
-        this.gasPrice = this.transfer.gasPrice * Math.pow(10, 9);
+        this.gasPrice = this.transfer.gasPrice;
         this.gasLimit = this.transfer.gasLimit;
       }
-
-      // 处理转账数量 以 wei为单位
-      let amount = new BigNumber(this.transfer.amount + "");
-      let value = amount.times(Math.pow(10, this.decimal)).toString();
 
       // 处理data
       let data = this.stringToHex(this.transfer.input);
@@ -600,11 +595,15 @@ export default {
         let transactionObj = {
           from: from,
           to: to,
-          value: value,
-          gasLimit: new Unit(this.gasLimit).asWei().toWei(),
-          gasPrice: new Unit(this.gasPrice).asWei().toWei(),
+          value: new Unit(this.transfer.amount).asEther().toWei().toString(),
+          gasLimit: new Unit(this.gasLimit).asWei().toWei().toString(),
+          gasPrice: new Unit(this.gasPrice).asEther().toWei().toString(),
           data: data
         };
+
+        console.log(transactionObj);
+        console.log(this.gasPrice);
+        return false;
 
         let txn = harmony.transactions.newTx(transactionObj, true);
 
