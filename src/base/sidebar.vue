@@ -124,6 +124,7 @@ export default {
         expires: -30,
         path: "/"
       });
+      window.harmony.forgetIdentity();
       if (this.blockchain_lowercase == "harmony") {
         this.webUtil.delSession("fromShard");
         this.webUtil.delSession("toShard");
