@@ -117,7 +117,9 @@
                   v-model="transfer.input"
                 ></textarea>
               </div>
-              <a class="btn" @click="sendTransfer">{{$t("transfer")}}</a>
+              <!--<a class="btn" @click="sendTransfer">{{$t("transfer")}}</a>-->
+              <a class="btn" v-if="!transferring" @click="sendTransfer">{{$t("transfer")}}</a>
+              <button class="btn" v-else disabled ="disabled" >{{$t('transferring')}}</button>
             </form>
           </div>
         </div>
@@ -190,7 +192,8 @@ export default {
         address: "",
         txOnShard: "",
         txDetail: ""
-      }
+      },
+      transferring: false
     };
   },
   created() {
@@ -525,6 +528,134 @@ export default {
         .div(this.gasLimit)
         .toFixed();
     },
+    // sendTransfer() {
+    //   if (!this.transfer.account) {
+    //     this.$alert(this.$t("transfer_account_null"));
+    //     return false;
+    //   }
+    //   if (this.transfer.amount == "" && this.transfer.amount != 0) {
+    //     this.$alert(this.$t("transfer_amount_null"));
+    //     return false;
+    //   }
+    //   if (
+    //     this.transfer.amount < Math.pow(10, -this.decimal) &&
+    //     this.transfer.amount != 0
+    //   ) {
+    //     this.$alert(
+    //       this.$t("transfer_amount_min") +
+    //         this.webUtil.getFullNum(Math.pow(10, -this.decimal))
+    //     );
+    //     return false;
+    //   }
+    //   // 判断转账数量
+    //   if (parseFloat(this.transfer.amount) >= parseFloat(this.balances.sum)) {
+    //     this.$alert(this.$t("webwallet_harmony_amount_notenough"));
+    //     return false;
+    //   }
+    //
+    //   // 计算gasPrice
+    //   if (this.selectedSet == 1) {
+    //     this.gasSimpleSet(this.transfer.fee);
+    //   } else {
+    //     if (!this.transfer.gasPrice) {
+    //       this.$alert(this.$t("gas_limit_null"));
+    //       return false;
+    //     }
+    //     if (!this.transfer.gasLimit) {
+    //       this.$alert(this.$t("gas_price_null"));
+    //       return false;
+    //     }
+    //     this.gasPrice = this.transfer.gasPrice;
+    //     this.gasLimit = this.transfer.gasLimit;
+    //   }
+    //
+    //   // 处理data
+    //   let data = this.stringToHex(this.transfer.input);
+    //
+    //   // 判断插件是否存在
+    //   if (!window.harmony || !this.harmonyExt.extensionType === null) {
+    //     this.$alert(this.$t("noMathExtension"));
+    //     return false;
+    //   }
+    //
+    //   let harmony = this.harmonyExt;
+    //   // 这里也不需要再次设置shardingStructure了
+    //   // 调用登陆函数
+    //   harmony.wallet.getAccount().then(res => {
+    //     let account = res.address;
+    //
+    //     //判断插件选择账户和当前账户是否一致
+    //     if (account != this.account) {
+    //       this.$alert(this.$t("check_account"));
+    //       return false;
+    //     }
+    //
+    //     // 处理地址
+    //     let from = account + "-" + this.fromShard;
+    //     let to = this.transfer.account + "-" + this.toShard;
+    //
+    //     // 交易对象
+    //     let transactionObj = {
+    //       from: from,
+    //       to: to,
+    //       value: new Unit(this.transfer.amount).asEther().toWei().toString(),
+    //       gasLimit: new Unit(this.gasLimit).asWei().toWei().toString(),
+    //       gasPrice: new Unit(this.gasPrice).asEther().toWei().toString(),
+    //       data: data
+    //     };
+    //
+    //     console.log(transactionObj);
+    //     console.log(this.gasPrice);
+    //     return false;
+    //
+    //     let txn = harmony.transactions.newTx(transactionObj, true);
+    //
+    //     harmony.wallet
+    //       .signTransaction(txn, true)
+    //       .then(signed => {
+    //         // 发送交易
+    //         signed
+    //           .sendTransaction()
+    //           .then(res => {
+    //             let [transaction, hash] = res;
+    //             let url = this.explorerLink.txDetail + hash;
+    //             if (hash) {
+    //               this.$confirm({
+    //                 content: "Hash: " + hash,
+    //                 yesText: "Go",
+    //                 noText: "Close"
+    //               })
+    //                 .then(success => {
+    //                   if (success) {
+    //                     // window.location.href = url;
+    //                     window.open(url, "_blank");
+    //                   }
+    //                 })
+    //                 .catch(err => {
+    //                   if (err == "fail") {
+    //                     // window.location.reload();
+    //                   }
+    //                   console.log(err);
+    //                 });
+    //             }
+    //             transaction.confirm(hash).then(res => {
+    //               console.log(res);
+    //               if (res.txStatus == "CONFIRMED") {
+    //                 this.balanceUpdate();
+    //               }
+    //             });
+    //           })
+    //           .catch(err => {
+    //             console.log(err);
+    //             this.$alert(this.$t("transfer_fail"));
+    //           });
+    //       })
+    //       .catch(err => {
+    //         console.log(err);
+    //       });
+    //   });
+    // }
+
     sendTransfer() {
       if (!this.transfer.account) {
         this.$alert(this.$t("transfer_account_null"));
@@ -540,10 +671,11 @@ export default {
       ) {
         this.$alert(
           this.$t("transfer_amount_min") +
-            this.webUtil.getFullNum(Math.pow(10, -this.decimal))
+          this.webUtil.getFullNum(Math.pow(10, -this.decimal))
         );
         return false;
       }
+
       // 判断转账数量
       if (parseFloat(this.transfer.amount) >= parseFloat(this.balances.sum)) {
         this.$alert(this.$t("webwallet_harmony_amount_notenough"));
@@ -576,7 +708,6 @@ export default {
       }
 
       let harmony = this.harmonyExt;
-      // 这里也不需要再次设置shardingStructure了
       // 调用登陆函数
       harmony.wallet.getAccount().then(res => {
         let account = res.address;
@@ -587,6 +718,8 @@ export default {
           return false;
         }
 
+        this.transferring = true;
+
         // 处理地址
         let from = account + "-" + this.fromShard;
         let to = this.transfer.account + "-" + this.toShard;
@@ -595,15 +728,11 @@ export default {
         let transactionObj = {
           from: from,
           to: to,
-          value: new Unit(this.transfer.amount).asEther().toWei().toString(),
+          value: new Unit(this.transfer.amount).asEther().toWei(),
           gasLimit: new Unit(this.gasLimit).asWei().toWei().toString(),
           gasPrice: new Unit(this.gasPrice).asEther().toWei().toString(),
           data: data
         };
-
-        console.log(transactionObj);
-        console.log(this.gasPrice);
-        return false;
 
         let txn = harmony.transactions.newTx(transactionObj, true);
 
@@ -615,6 +744,8 @@ export default {
               .sendTransaction()
               .then(res => {
                 let [transaction, hash] = res;
+                console.log(transaction);
+
                 let url = this.explorerLink.txDetail + hash;
                 if (hash) {
                   this.$confirm({
@@ -625,12 +756,14 @@ export default {
                     .then(success => {
                       if (success) {
                         // window.location.href = url;
+                        this.transferring = false;
                         window.open(url, "_blank");
                       }
                     })
                     .catch(err => {
                       if (err == "fail") {
                         // window.location.reload();
+                        this.transferring = false;
                       }
                       console.log(err);
                     });
@@ -645,10 +778,13 @@ export default {
               .catch(err => {
                 console.log(err);
                 this.$alert(this.$t("transfer_fail"));
+                this.transferring = false;
               });
           })
           .catch(err => {
             console.log(err);
+            this.$alert(this.$t("transfer_fail"));
+            this.transferring = false;
           });
       });
     }
