@@ -8,24 +8,24 @@ export default {
     },
     nodes:[
       {
-        name:'Harmony',
+        name:'Mainnet',
         url:'https://api.s0.t.hmny.io/',
         chainId: 1
       },
       {
-        name:'Pangaea',
-        url:'https://api.s0.pga.hmny.io/',
+        name:'Open Staking Testnet',
+        url:'https://api.s0.os.hmny.io',
         chainId: 3
       },
       {
-        name:'Harmony Testnet',
+        name:'Long Running Testnet',
         url:'https://api.s0.b.hmny.io/',
         chainId: 2
       },
       {
         name:'Localhost',
         url:'http://127.0.0.1:9500',
-        chainId: 2
+        chainId: 4
       }
     ]
   },
